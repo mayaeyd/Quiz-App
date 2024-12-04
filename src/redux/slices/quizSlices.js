@@ -5,37 +5,51 @@ const initialState = {
   list: [],
   score: 0,
   status: "idle",
+  category: null,
+  difficulty: null,
 };
 
 export const fetchQuizzes = createAsyncThunk("quiz/fetchQuizzes", async () => {
-  const response = await axios("https://the-trivia-api.com/v2/questions");  
+  const response = await axios("https://the-trivia-api.com/v2/questions");
   return response.data;
 });
 
-//export const fetchFilteredQuizzes
+export const fetchFilteredQuizzes = createAsyncThunk(
+  "quiz/fetchFilteredQuizzes",
+  async ({ category, difficulty }) => {
+    const response = await axios(
+      `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=${difficulty}`
+    );
+    return response.data;
+  }
+);
 
 const quizSlice = createSlice({
   name: "quiz",
   initialState,
   reducers: {
-    incrementScore:(state, action)=>{
+    incrementScore: (state, action) => {
       state.score += action.payload;
-    }
+    },
+    setFilters: (state, action)=>{
+      state.category = action.payload.category;
+      state.difficulty = action.payload.difficulty; 
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchQuizzes.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchQuizzes.fulfilled,(state,action)=>{
+      .addCase(fetchQuizzes.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.list = action.payload;
       })
-      .addCase(fetchQuizzes.rejected , (state)=>{
+      .addCase(fetchQuizzes.rejected, (state) => {
         state.status = "failed";
-      })
+      });
   },
 });
 
-export const {incrementScore} = quizSlice.actions;
+export const { incrementScore, setFilters } = quizSlice.actions;
 export default quizSlice.reducer;

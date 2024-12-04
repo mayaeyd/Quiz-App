@@ -26,10 +26,12 @@ const Quiz = () => {
   const handleAnswerClick = (answer) => {
     if (answer === currentQuiz.correctAnswer) {
       dispatch(incrementScore(1));
-    }
-    if (currentQuestionIndex < list.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
+    }
+    else if(answer !== currentQuiz.correctAnswer){
+      console.log('try again');
+    }
+    else {
       alert(`Game Over! You scored ${score}/10`);
     }
   };
