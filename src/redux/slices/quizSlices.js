@@ -9,6 +9,8 @@ const initialState = {
 
 export const fetchQuizzes = createAsyncThunk("quiz/fetchQuizzes", async () => {
   const response = await axios("https://the-trivia-api.com/v2/questions");
+  console.log(response.data);
+  
   return response.data;
 });
 
@@ -30,3 +32,5 @@ const quizSlice = createSlice({
       })
   },
 });
+
+export default quizSlice.reducer;
