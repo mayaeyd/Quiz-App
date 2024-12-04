@@ -1,10 +1,7 @@
-import { useEffect } from "react";
 import "./styles/App.css";
-import { fetchQuizzes } from "./redux/slices/quizSlices";
-import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import WelcomePage from "./pages/WelcomePage/WelcomePage";
-import Quiz from "./pages/Quiz/Quiz";
+import WelcomePage from "./pages/WelcomePage";
+import Quiz from "./pages/Quiz";
 
 function App() {
   return(
