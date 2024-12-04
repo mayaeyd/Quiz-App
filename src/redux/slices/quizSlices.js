@@ -17,7 +17,11 @@ export const fetchQuizzes = createAsyncThunk("quiz/fetchQuizzes", async () => {
 const quizSlice = createSlice({
   name: "quiz",
   initialState,
-  reducers: {},
+  reducers: {
+    incrementScore:(state, action)=>{
+      state.score += action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchQuizzes.pending, (state) => {
@@ -33,4 +37,5 @@ const quizSlice = createSlice({
   },
 });
 
+export const {incrementScore} = quizSlice.actions;
 export default quizSlice.reducer;
