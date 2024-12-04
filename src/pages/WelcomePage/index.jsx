@@ -11,7 +11,7 @@ const WelcomePage = () => {
       <OnBoarding />
       <Button
         variant="contained"
-        onClick={() => navigate("/quiz")}
+        onClick={() => navigate("/filter")}
         size="large"
         color="secondary"
       >
