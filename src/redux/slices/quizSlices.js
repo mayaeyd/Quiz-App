@@ -8,11 +8,11 @@ const initialState = {
 };
 
 export const fetchQuizzes = createAsyncThunk("quiz/fetchQuizzes", async () => {
-  const response = await axios("https://the-trivia-api.com/v2/questions");
-  console.log(response.data);
-  
+  const response = await axios("https://the-trivia-api.com/v2/questions");  
   return response.data;
 });
+
+//export const fetchFilteredQuizzes
 
 const quizSlice = createSlice({
   name: "quiz",

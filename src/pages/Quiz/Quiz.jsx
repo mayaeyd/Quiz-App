@@ -1,14 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuizzes } from "../../redux/slices/quizSlices";
+import './style.css'
 
 const Quiz = () => {
   const dispatch = useDispatch();
+  
   const { list, status } = useSelector((state) => state.quizzes);
+  
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const currentQuiz = list[currentQuestionIndex];
 
   useEffect(() => {
     dispatch(fetchQuizzes());
-  }, []);
+  }, [dispatch]);
+
   if (status === "loading") {
     return <div>Loading...</div>;
   }
@@ -17,25 +23,32 @@ const Quiz = () => {
     return <div>Error loading quizzes</div>;
   }
 
+  const handleAnswerClick = (answer) => {
+    if (answer === currentQuiz.correctAnswer) {
+    }
+    if (currentQuestionIndex < list.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+    }
+  };
+
   return (
-    <div>
-      {list.length === 0 ? (
-        <div>No quizzes available</div>
-      ) : (
-        <ul>
-          {list.map((quiz, index) => (
-            <li key={quiz.id}>
-              <h3>{quiz.category}</h3>
-              <p>{quiz.question.text}</p> 
-              <ul>
-                {quiz.incorrectAnswers.map((option, idx) => (
-                  <li key={idx}>{option}</li>
-                ))}
-                <li>{quiz.correctAnswer}</li>
-              </ul>
-            </li>
-          ))}
-        </ul>
+    <div className="quiz-container">
+      {currentQuiz && (
+        <div>
+          <h3>{currentQuiz.category}</h3>
+          <p>{currentQuiz.question.text}</p>
+          
+          <ul>
+            {[...currentQuiz.incorrectAnswers, currentQuiz.correctAnswer]
+              .sort()
+              .map((answer, idx) => (
+                <li key={idx}>
+                  <button onClick={() => handleAnswerClick(answer)}>{answer}</button>
+                </li>
+              ))}
+          </ul>
+        </div>
       )}
     </div>
   );
