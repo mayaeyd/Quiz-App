@@ -17,6 +17,8 @@ export const fetchQuizzes = createAsyncThunk("quiz/fetchQuizzes", async () => {
 export const fetchFilteredQuizzes = createAsyncThunk(
   "quiz/fetchFilteredQuizzes",
   async ({ category, difficulty }) => {
+    console.log("in slice:", category, difficulty);
+    
     const response = await axios(
       `https://the-trivia-api.com/v2/questions?categories=${category}&difficulties=${difficulty}`
     );
@@ -31,9 +33,9 @@ const quizSlice = createSlice({
     incrementScore: (state, action) => {
       state.score += action.payload;
     },
-    setFilters: (state, action)=>{
+    setFilters: (state, action) => {
       state.category = action.payload.category;
-      state.difficulty = action.payload.difficulty; 
+      state.difficulty = action.payload.difficulty;
     },
   },
   extraReducers: (builder) => {
@@ -46,6 +48,17 @@ const quizSlice = createSlice({
         state.list = action.payload;
       })
       .addCase(fetchQuizzes.rejected, (state) => {
+        state.status = "failed";
+      })
+
+      .addCase(fetchFilteredQuizzes.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchFilteredQuizzes.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(fetchFilteredQuizzes.rejected, (state) => {
         state.status = "failed";
       });
   },

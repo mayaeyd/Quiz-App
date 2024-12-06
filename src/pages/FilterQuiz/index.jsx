@@ -113,9 +113,9 @@ const FilterQuiz = () => {
         open={difficultyOpen}
         onClose={() => handleDifficultyClose(null)}
       >
-        <MenuItem onClick={() => handleDifficultyClose("Easy")}>Easy</MenuItem>
-        <MenuItem onClick={() => handleDifficultyClose("Medium")}>Medium</MenuItem>
-        <MenuItem onClick={() => handleDifficultyClose("Hard")}>Hard</MenuItem>
+        <MenuItem onClick={() => handleDifficultyClose("easy")}>Easy</MenuItem>
+        <MenuItem onClick={() => handleDifficultyClose("medium")}>Medium</MenuItem>
+        <MenuItem onClick={() => handleDifficultyClose("hard")}>Hard</MenuItem>
       </Menu>
 
       <Button

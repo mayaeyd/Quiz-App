@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFilteredQuizzes, fetchQuizzes, incrementScore } from "../../redux/slices/quizSlices";
+import {
+  fetchFilteredQuizzes,
+  fetchQuizzes,
+  incrementScore,
+} from "../../redux/slices/quizSlices";
 import "./style.css";
 
 const Quiz = () => {
   const dispatch = useDispatch();
 
-  const { list, status, score, category, difficulty } = useSelector((state) => state.quizzes);
+  const { list, status, score, category, difficulty } = useSelector(
+    (state) => state.quizzes
+  );
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const currentQuiz = list[currentQuestionIndex];
 
-  if (category && difficulty){
-    useEffect(()=>{
-      dispatch(fetchFilteredQuizzes());
-    },[dispatch])
-  }else{
-    useEffect(() => {
+  useEffect(() => {
+    if (category && difficulty) {
+      dispatch(fetchFilteredQuizzes({ category, difficulty }));
+    } else {
       dispatch(fetchQuizzes());
-    }, [dispatch]);
-  }
-
-
+    }
+  }, [dispatch, category, difficulty]); 
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -35,11 +37,9 @@ const Quiz = () => {
     if (answer === currentQuiz.correctAnswer) {
       dispatch(incrementScore(1));
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-    else if(answer !== currentQuiz.correctAnswer){
-      console.log('try again');
-    }
-    else {
+    } else if (answer !== currentQuiz.correctAnswer) {
+      console.log("try again");
+    } else {
       alert(`Game Over! You scored ${score}/10`);
     }
   };
