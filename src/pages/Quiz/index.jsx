@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchQuizzes, incrementScore } from "../../redux/slices/quizSlices";
+import { fetchFilteredQuizzes, fetchQuizzes, incrementScore } from "../../redux/slices/quizSlices";
 import "./style.css";
 
 const Quiz = () => {
   const dispatch = useDispatch();
 
-  const { list, status, score } = useSelector((state) => state.quizzes);
+  const { list, status, score, category, difficulty } = useSelector((state) => state.quizzes);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const currentQuiz = list[currentQuestionIndex];
 
-  useEffect(() => {
-    dispatch(fetchQuizzes());
-  }, [dispatch]);
+  if (category && difficulty){
+    useEffect(()=>{
+      dispatch(fetchFilteredQuizzes());
+    },[dispatch])
+  }else{
+    useEffect(() => {
+      dispatch(fetchQuizzes());
+    }, [dispatch]);
+  }
+
+
 
   if (status === "loading") {
     return <div>Loading...</div>;
